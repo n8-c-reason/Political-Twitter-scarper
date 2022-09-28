@@ -1,4 +1,5 @@
 import sys ##Allows you to launch the app from commandline 
+import os
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QGridLayout) ##All the widgets I may use I'll import here
 
@@ -21,7 +22,7 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ##The layout I shall use for this menue is the gridlayout
         self.gMainLayout = QGridLayout()##This allows me to split my window in to multile pices
 
-        self.centralTitle = QLabel("Tweet sentiment analysier") ##Creates a Qlabel which I'll use for my main title
+        self.centralTitle = QLabel("Tweet sentiment analysier c") ##Creates a Qlabel which I'll use for my main title
         self.centralTitle.setProperty("class", "title")
         self.gMainLayout.addWidget(self.centralTitle, 3,3)##Adds the label to the layout at the postion (3,3)
 
@@ -47,7 +48,7 @@ if __name__ == '__main__': ##Starts the program
     mainMenue.show() ##All widgets need to be shown
     
     ## Opens the main style sheet for the project
-    with open("main style sheet.qss", "r") as f: 
+    with open(os.path.join(sys.path[0], "main style sheet.qss"), "r") as f: 
         _style = f.read() 
         app.setStyleSheet(_style)##Sets the style sheet
 
