@@ -1,0 +1,6 @@
+.title { /*This is the the class for my main titals */
+    color: red;
+    font-size: large;
+    /* Changes the font and colour easily with CSS 
+    There are many other things I can do as well */
+}
