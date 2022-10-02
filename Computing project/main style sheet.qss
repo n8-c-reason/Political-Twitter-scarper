@@ -1,6 +1,9 @@
 
 .title { /*This is the the class for my main titals */
-    font-family: n;
+    font-size: 20px;
     /* Changes the font and colour easily with CSS 
     There are many other things I can do as well */
+}
+.menueButtons {
+    
 }

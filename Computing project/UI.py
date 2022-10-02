@@ -1,9 +1,10 @@
 import sys ##Allows you to launch the app from commandline 
 import os
-from tkinter.font import families
+from tkinter import font
 from PyQt6.QtGui import QFont, QFontDatabase
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QGridLayout) ##All the widgets I may use I'll import here
+from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
+     QHBoxLayout, QLabel, QGridLayout, QPushButton) ##All the widgets I may use I'll import here
 
 
 ##This is the subclass for our QMain window
@@ -15,10 +16,18 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ##This allows us to change the title of our window
         self.setWindowTitle("Python Twitter scraper")##This is aimed at self(MainWindow)
 
-        self._height = 300
+        #this determines the hieght and width of my program
+        self._height = 300 # change these if needed. currently there in the ratio 4:3 
         self._length = 400
         self.setFixedHeight(self._height)
         self.setFixedWidth(self._length)
+
+        #Orignally I would have used the font in my stylesheet but @font-faces does not work
+        fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Arvo-Regular.ttf")
+        self.families = QFontDatabase.applicationFontFamilies(fontId) ## This allows me to have a dictionary of fonts
+        fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
+        #fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
+        #self.families = QFontDatabase.applicationFontFamilies(fontId)
 
         self.primaryMenue()## Calls the function for the primary menue
 
@@ -26,30 +35,28 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ##change this if you want to change menue ^
 
     def primaryMenue(self):## The function which will hold all the widgets for the primary menue
+        ##Creates the layout which I'll use to store my widgets
         self.mainVLayout = QVBoxLayout()
 
+        ## QLABEL
         self.centralTitle = QLabel("Tweet sentiment analysier c") ##Creates a Qlabel which I'll use for my main title
         self.centralTitle.setProperty("class", "title")
+        self.centralTitle.setFont(QFont("Arvo"))
 
-        id = QFontDatabase.addApplicationFont(os.path.join(sys.path[0], "Font\Arvo-Bold.ttf")) 
-        if id < 0: print("e")
-        print (id)
-        families = QFontDatabase.applicationFontFamilies(id)
-        print(families)
-
-
-        #self.centralTitle.setFont(QFont("Arvo-Bold", 16))
-        self.mainVLayout.addWidget(self.centralTitle)##Adds the label to the layout at the postion (3,3)
+        ## QPUSHBUTTON
+        self.tweetScraping = QPushButton("Tweet scraping")
+        self.tweetScraping.setFont(QFont("Tahoma"))
+        
+        self.mainVLayout.addSpacing(20) ## Creates a gap above the label
+        self.mainVLayout.addWidget(self.centralTitle)##Adds the label to the layout at the postion (2)
+        self.mainVLayout.addWidget(self.tweetScraping, alignment=Qt.AlignmentFlag.AlignTop)
 
         self.mainWidget = QWidget()  ## This creates the widget which holds the primary menue
         self.mainWidget.setLayout(self.mainVLayout) ## This attaches the layout to this widget
+
+        ## Ther first alignes the label to the top and the second centers the whole V layout.
         self.centralTitle.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.mainVLayout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
-
-
-
-
 
         
 
