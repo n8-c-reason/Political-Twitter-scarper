@@ -1,8 +1,9 @@
+from ctypes import alignment
 import sys ##Allows you to launch the app from commandline 
 import os
 from tkinter import font
 from PyQt6.QtGui import QFont, QFontDatabase
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
      QHBoxLayout, QLabel, QGridLayout, QPushButton) ##All the widgets I may use I'll import here
 
@@ -39,17 +40,38 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         self.mainVLayout = QVBoxLayout()
 
         ## QLABEL
-        self.centralTitle = QLabel("Tweet sentiment analysier c") ##Creates a Qlabel which I'll use for my main title
+        self.centralTitle = QLabel("Tweet sentiment analysier") ##Creates a Qlabel which I'll use for my main title
         self.centralTitle.setProperty("class", "title")
         self.centralTitle.setFont(QFont("Arvo"))
 
         ## QPUSHBUTTON
         self.tweetScraping = QPushButton("Tweet scraping")
         self.tweetScraping.setFont(QFont("Tahoma"))
+        self.tweetScraping.setProperty("class", "menueButtons")
+        self.tweetScraping.setFixedSize(QSize(120, 45))
+
+        self.retriveData = QPushButton("Retrive Data")
+        self.retriveData.setProperty("class", "menueButtons")
+        self.retriveData.setFont(QFont("Tahoma"))
+        self.retriveData.setFixedSize(QSize(120, 45))
+
+        self.loadData = QPushButton("Load Data")
+        self.loadData.setProperty("class", "menueButtons")
+        self.loadData.setFont(QFont("Tahoma"))
+        self.loadData.setFixedSize(QSize(120, 45))
+
+        self.emailData = QPushButton("Email Data")
+        self.emailData.setProperty("class", "menueButtons")
+        self.emailData.setFont(QFont("Tahoma"))
+        self.emailData.setFixedSize(QSize(120, 45))
         
+        ##ADD WIDGETS TO LAYOUT
         self.mainVLayout.addSpacing(20) ## Creates a gap above the label
         self.mainVLayout.addWidget(self.centralTitle)##Adds the label to the layout at the postion (2)
-        self.mainVLayout.addWidget(self.tweetScraping, alignment=Qt.AlignmentFlag.AlignTop)
+        self.mainVLayout.addWidget(self.tweetScraping, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.mainVLayout.addWidget(self.retriveData, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.mainVLayout.addWidget(self.loadData, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.mainVLayout.addWidget(self.emailData, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.mainWidget = QWidget()  ## This creates the widget which holds the primary menue
         self.mainWidget.setLayout(self.mainVLayout) ## This attaches the layout to this widget

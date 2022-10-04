@@ -5,5 +5,5 @@
     There are many other things I can do as well */
 }
 .menueButtons {
-    
+    font-size: 15px;
 }
