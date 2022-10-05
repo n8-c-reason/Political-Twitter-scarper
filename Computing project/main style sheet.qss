@@ -1,9 +1,27 @@
 
 .title { /*This is the the class for my main titals */
-    font-size: 20px;
+    font-size: 35px;
+    border-style: dashed;
+    border-color: black;
     /* Changes the font and colour easily with CSS 
     There are many other things I can do as well */
 }
 .menueButtons {
-    font-size: 15px;
+    font-size: 20px;
+    background-color: blue;
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
+
+}
+.menueButtons:hover:!pressed {
+    background-color: aqua;
+    border-bottom-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.menueButtons:pressed {
+    background-color: red;
+    border-bottom-right-radius: 18px;
+    border-top-left-radius: 18px;
 }

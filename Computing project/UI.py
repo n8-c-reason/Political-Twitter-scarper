@@ -1,7 +1,6 @@
-from ctypes import alignment
+from cgi import test
 import sys ##Allows you to launch the app from commandline 
 import os
-from tkinter import font
 from PyQt6.QtGui import QFont, QFontDatabase
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
@@ -18,8 +17,8 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         self.setWindowTitle("Python Twitter scraper")##This is aimed at self(MainWindow)
 
         #this determines the hieght and width of my program
-        self._height = 300 # change these if needed. currently there in the ratio 4:3 
-        self._length = 400
+        self._height = 450 # change these if needed. currently there in the ratio 4:3 
+        self._length = 600
         self.setFixedHeight(self._height)
         self.setFixedWidth(self._length)
 
@@ -27,7 +26,6 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Arvo-Regular.ttf")
         self.families = QFontDatabase.applicationFontFamilies(fontId) ## This allows me to have a dictionary of fonts
         fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
-        #fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
         #self.families = QFontDatabase.applicationFontFamilies(fontId)
 
         self.primaryMenue()## Calls the function for the primary menue
@@ -43,12 +41,15 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         self.centralTitle = QLabel("Tweet sentiment analysier") ##Creates a Qlabel which I'll use for my main title
         self.centralTitle.setProperty("class", "title")
         self.centralTitle.setFont(QFont("Arvo"))
+        self.centralTitle.setFixedHeight(45)
 
         ## QPUSHBUTTON
-        self.tweetScraping = QPushButton("Tweet scraping")
-        self.tweetScraping.setFont(QFont("Tahoma"))
-        self.tweetScraping.setProperty("class", "menueButtons")
-        self.tweetScraping.setFixedSize(QSize(120, 45))
+        # self.tweetScraping = QPushButton("Tweet scraping")
+        # self.tweetScraping.setFont(QFont("Tahoma"))
+        # self.tweetScraping.setProperty("class", "menueButtons")
+        # self.tweetScraping.setFixedSize(QSize(120, 45))
+
+        self.tweetScraping = Button("Tweet scraping", "test1")
 
         self.retriveData = QPushButton("Retrive Data")
         self.retriveData.setProperty("class", "menueButtons")
@@ -68,6 +69,7 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ##ADD WIDGETS TO LAYOUT
         self.mainVLayout.addSpacing(20) ## Creates a gap above the label
         self.mainVLayout.addWidget(self.centralTitle)##Adds the label to the layout at the postion (2)
+        self.mainVLayout.addSpacing(10)
         self.mainVLayout.addWidget(self.tweetScraping, alignment=Qt.AlignmentFlag.AlignCenter)
         self.mainVLayout.addWidget(self.retriveData, alignment=Qt.AlignmentFlag.AlignCenter)
         self.mainVLayout.addWidget(self.loadData, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -79,8 +81,27 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ## Ther first alignes the label to the top and the second centers the whole V layout.
         self.centralTitle.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.mainVLayout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+    def printTest(self):
+        print("test3")
 
+class Button(QPushButton):
+    def __init__(self, parent=None, functionName=""):
+        super().__init__(parent)
+
+        self.func1 = functionName
         
+        self.setProperty("class", "menueButtons")
+        self.setFont(QFont("Tahoma"))
+        self.setFixedSize(QSize(120, 45))
+        self.setChecked(True)
+        self.clicked.connect(self.buttonFunction)
+
+    def test1(self):
+        method = MainWindow().printTest
+        method()
+
+    def buttonFunction(self):
+        exec("self." + (self.func1) + "()")
 
 
 if __name__ == '__main__': ##Starts the program
