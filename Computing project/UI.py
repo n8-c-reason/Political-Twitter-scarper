@@ -23,10 +23,9 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         self.setFixedWidth(self._length)
 
         #Orignally I would have used the font in my stylesheet but @font-faces does not work
-        fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Arvo-Regular.ttf")
+        fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Arvo-Regular.ttf") ##This loads the font from the local location
         self.families = QFontDatabase.applicationFontFamilies(fontId) ## This allows me to have a dictionary of fonts
         fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
-        #self.families = QFontDatabase.applicationFontFamilies(fontId)
 
         self.primaryMenue()## Calls the function for the primary menue
 
@@ -37,39 +36,25 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ##Creates the layout which I'll use to store my widgets
         self.mainVLayout = QVBoxLayout()
 
-        ## QLABEL
+        ## QLABEL ##
         self.centralTitle = QLabel("Tweet sentiment analysier") ##Creates a Qlabel which I'll use for my main title
-        self.centralTitle.setProperty("class", "title")
-        self.centralTitle.setFont(QFont("Arvo"))
-        self.centralTitle.setFixedHeight(45)
+        self.centralTitle.setProperty("class", "title") ## This applies the class from my stylesheet to this widget
+        self.centralTitle.setFont(QFont("Arvo")) ## Sets the font for this widget to Arvo
 
-        ## QPUSHBUTTON
-        # self.tweetScraping = QPushButton("Tweet scraping")
-        # self.tweetScraping.setFont(QFont("Tahoma"))
-        # self.tweetScraping.setProperty("class", "menueButtons")
-        # self.tweetScraping.setFixedSize(QSize(120, 45))
+        ## QPUSHBUTTON ##
+        self.tweetScraping = Button("Tweet scraping", "tweetSFunc")
 
-        self.tweetScraping = Button("Tweet scraping", "test1")
+        self.retriveData = Button("Retrive Data", "retriveDFunc")
 
-        self.retriveData = QPushButton("Retrive Data")
-        self.retriveData.setProperty("class", "menueButtons")
-        self.retriveData.setFont(QFont("Tahoma"))
-        self.retriveData.setFixedSize(QSize(120, 45))
+        self.loadData = Button("Load Data", "loadDFunc")
 
-        self.loadData = QPushButton("Load Data")
-        self.loadData.setProperty("class", "menueButtons")
-        self.loadData.setFont(QFont("Tahoma"))
-        self.loadData.setFixedSize(QSize(120, 45))
-
-        self.emailData = QPushButton("Email Data")
-        self.emailData.setProperty("class", "menueButtons")
-        self.emailData.setFont(QFont("Tahoma"))
-        self.emailData.setFixedSize(QSize(120, 45))
+        self.emailData = Button("Email Data", "emailDFunc")
         
-        ##ADD WIDGETS TO LAYOUT
+        ## ADD WIDGETS TO LAYOUT ##
         self.mainVLayout.addSpacing(20) ## Creates a gap above the label
         self.mainVLayout.addWidget(self.centralTitle)##Adds the label to the layout at the postion (2)
         self.mainVLayout.addSpacing(10)
+        ##This is where I attach all my buttons to the layout and then alignes them using the alingment flag tool
         self.mainVLayout.addWidget(self.tweetScraping, alignment=Qt.AlignmentFlag.AlignCenter)
         self.mainVLayout.addWidget(self.retriveData, alignment=Qt.AlignmentFlag.AlignCenter)
         self.mainVLayout.addWidget(self.loadData, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -81,27 +66,29 @@ class MainWindow(QMainWindow):##Everything will be contained within this widget.
         ## Ther first alignes the label to the top and the second centers the whole V layout.
         self.centralTitle.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.mainVLayout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-    def printTest(self):
+    def tweetSFunc(self):
         print("test3")
 
+## The class which I use to create my buttons. Pyqt you have to do this with classes like if you were to do it in tkinter with functions
 class Button(QPushButton):
-    def __init__(self, parent=None, functionName=""):
+    def __init__(self, parent=None, functionName=""): ##I need to know the name for button and what function it will call when clicked
         super().__init__(parent)
 
-        self.func1 = functionName
+        self.functionName = functionName
         
-        self.setProperty("class", "menueButtons")
-        self.setFont(QFont("Tahoma"))
-        self.setFixedSize(QSize(120, 45))
+        self.setProperty("class", "menueButtons")##This aplies the class from my stylesheet to the widget
+        self.setFont(QFont("Tahoma")) ## Sets the font from the dictionary 
+        self.setFixedSize(QSize(120, 45)) ## The set size of the button (widpth, hight)
         self.setChecked(True)
-        self.clicked.connect(self.buttonFunction)
+        self.clicked.connect(self.buttonFunction) ##This says that when the button is clicked that it will run that function
 
-    def test1(self):
-        method = MainWindow().printTest
+    def tweetSFunc(self):
+        ## This then calls the function in my main window class so that I can change things easily there
+        method = MainWindow().tweetSFunc
         method()
 
     def buttonFunction(self):
-        exec("self." + (self.func1) + "()")
+        exec("self." + (self.functionName) + "()") ## This makes funtionName a runable function call with exec.
 
 
 if __name__ == '__main__': ##Starts the program
