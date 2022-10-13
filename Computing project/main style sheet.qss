@@ -6,8 +6,15 @@
     /* Changes the font and colour easily with CSS 
     There are many other things I can do as well */
 }
+.settingsButtons {
+    background-color: transparent;
+    border-radius: 12px;
+}
+.settingsButtons:hover {
+    background-color: grey;
+}
 .menueButtons {
-    font-size: 20px;
+    font-size: 28px;
     background-color: blue;
     border-bottom-left-radius: 18px;
     border-top-right-radius: 18px;
