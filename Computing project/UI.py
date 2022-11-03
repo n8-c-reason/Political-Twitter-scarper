@@ -1,57 +1,64 @@
 import sys ##Allows you to launch the app from commandline 
 import os
+import sass
 from PyQt6.QtGui import QFont, QFontDatabase, QIcon
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
-     QHBoxLayout, QLabel, QGridLayout, QPushButton, QStackedWidget) ##All the widgets I may use I'll import here
+     QHBoxLayout, QLabel, QGridLayout, QPushButton, QStackedWidget, QStackedLayout) ##All the widgets I may use I'll import here
+
+##Import other classes from different python files
 from Settingsmenue import SettingsMenue 
 from PrimaryMenue import PrimaryMenue
+from EmailMenue import EmailData
+from DataMenue import DataGraph
 
+##FUNCTIONS FOR WINDOW CHANGE
 
-# class StackedWidgets(QStackedWidget):
-#     def __init__(self):
-#         QStackedWidget.__init__(self)
-
-#         self.firstMenue = PrimaryMenue(self)
-#         self.addWidget(self.firstMenue)
-#         settingM = SettingsMenue(self)
-#         self.addWidget(settingM)
-
-#         ##This allows us to change the title of our window
-#         self.setWindowTitle("Python Twitter scraper")##This is aimed at self(MainWindow)
-
-#         #this determines the hieght and width of my program
-#         self._height = 450 # change these if needed. currently there in the ratio 4:3 
-#         self._length = 600
-#         self.setFixedHeight(self._height)
-#         self.setFixedWidth(self._length)
-
-#         # #Orignally I would have used the font in my stylesheet but @font-faces does not work
-#         # fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Arvo-Regular.ttf") ##This loads the font from the local location
-#         # self.families = QFontDatabase.applicationFontFamilies(fontId) ## This allows me to have a dictionary of fonts
-#         # fontId = QFontDatabase.addApplicationFont("Computing project\Fonts\Tahoma Regular font.ttf")
+currentIndex = 0## This will allow me to widgets I've added to the stack and index it aacordilngly to it
 
 def changeSettings():
-    global widgets
+    global mainStackLayout, currentIndex
     settingM = SettingsMenue()
-    widgets.addWidget(settingM)
-    widgets.setCurrentIndex(1)
+    mainStackLayout.addWidget(settingM)
+    currentIndex += 1
+    mainStackLayout.setCurrentIndex(currentIndex)
+def changeEmail():
+    global mainStackLayout, currentIndex
+    emailD = EmailData()
+    mainStackLayout.addWidget(emailD)
+    currentIndex += 1
+    mainStackLayout.setCurrentIndex(currentIndex)
+def changeData():
+    global mainStackLayout, currentIndex
+    dataG = DataGraph()
+    mainStackLayout.addWidget(dataG)
+    currentIndex += 1
+    mainStackLayout.setCurrentIndex(currentIndex)
+
+##MISC functions
+
+def settingsReset(): ##When changing anything in stylesheet it needs to be reapplied 
+    with open(os.path.join(sys.path[0], "main style sheet.qss"), "r+") as f: 
+        _style = f.read() 
+        app.setStyleSheet(_style)##Sets the style sheet
 
 
 
 ##creates the one application I'll use for my project
 app = QApplication(sys.argv) ##An object which holds the event loop
 
-widgets = QStackedWidget()
+widgets = QWidget()
+mainStackLayout = QStackedLayout()
+widgets.setLayout(mainStackLayout)
 firstMenue = PrimaryMenue()
-widgets.addWidget(firstMenue)
+mainStackLayout.addWidget(firstMenue)
 widgets.setFixedHeight(450)
 widgets.setFixedWidth(600)
 
 widgets.show()##All widgets need to be shown
 
 ## Opens the main style sheet for the project
-with open(os.path.join(sys.path[0], "main style sheet.qss"), "r") as f: 
+with open(os.path.join(sys.path[0], "main style sheet.qss"), "r+") as f: 
     _style = f.read() 
     app.setStyleSheet(_style)##Sets the style sheet
 

@@ -1,6 +1,6 @@
 
 .title { /*This is the the class for my main titals */
-    font-size: 35px;
+    font-size: 30px;
     border-style: dashed;
     border-color: black;
     /* Changes the font and colour easily with CSS 
@@ -31,4 +31,14 @@
     background-color: red;
     border-bottom-right-radius: 18px;
     border-top-left-radius: 18px;
+}
+.settingsLabels {
+    font-size: 20px;
+    
+}
+.settingsMenueB {
+    font-size: 24px;
+    background-color: blue;
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
 }
