@@ -78,6 +78,10 @@ class PrimaryMenue(QWidget):## The function which will hold all the widgets for 
         # from UI import settingsReset
         # settingsReset()
 
+    def changeToScrape(self):
+        from UI import changeScrape
+
+        changeScrape()
     def changeToEmail(self):
         from UI import changeEmail
 

@@ -1,6 +1,17 @@
-
+QPushButton {
+    font-size: 24px;
+}
+QLabel {
+    font-size: 24px;
+    color: #52796f;
+}
+.error {
+    color: red;
+    font-size: 24px;
+}
 .title { /*This is the the class for my main titals */
     font-size: 30px;
+    color: #354f52;
     border-style: dashed;
     border-color: black;
     /* Changes the font and colour easily with CSS 
@@ -9,36 +20,47 @@
 .settingsButtons {
     background-color: transparent;
     border-radius: 12px;
+
 }
 .settingsButtons:hover {
     background-color: grey;
 }
 .menueButtons {
-    font-size: 28px;
-    background-color: blue;
-    border-bottom-left-radius: 18px;
+    background-color: #84a98c;
     border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
 
 }
 .menueButtons:hover:!pressed {
-    background-color: aqua;
+    background-color: #cad2c5;
     border-bottom-right-radius: 18px;
     border-top-left-radius: 18px;
     border-bottom-left-radius: 0px;
     border-top-right-radius: 0px;
 }
 .menueButtons:pressed {
-    background-color: red;
+    background-color: #4c6085;
     border-bottom-right-radius: 18px;
     border-top-left-radius: 18px;
 }
-.settingsLabels {
-    font-size: 20px;
-    
-}
+
+
 .settingsMenueB {
-    font-size: 24px;
-    background-color: blue;
+    background-color: #84a98c;
     border-bottom-left-radius: 18px;
     border-top-right-radius: 18px;
+}
+.settingsMenueB:hover {
+    background-color: #cad2c5;
+    border-bottom-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;   
+}
+.settingsMenueB:checked {
+    background-color: #4c6085;
+    border-bottom-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;   
 }

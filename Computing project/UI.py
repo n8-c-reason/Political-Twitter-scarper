@@ -11,11 +11,16 @@ from Settingsmenue import SettingsMenue
 from PrimaryMenue import PrimaryMenue
 from EmailMenue import EmailData
 from DataMenue import DataGraph
-
+from mainScrapeUI import TweetScrape
 ##FUNCTIONS FOR WINDOW CHANGE
 
 currentIndex = 0## This will allow me to widgets I've added to the stack and index it aacordilngly to it
-
+def changeScrape():
+    global mainStackLayout, currentIndex
+    scrapeM = TweetScrape()
+    mainStackLayout.addWidget(scrapeM)
+    currentIndex += 1
+    mainStackLayout.setCurrentIndex(currentIndex)
 def changeSettings():
     global mainStackLayout, currentIndex
     settingM = SettingsMenue()
@@ -41,6 +46,9 @@ def settingsReset(): ##When changing anything in stylesheet it needs to be reapp
     with open(os.path.join(sys.path[0], "main style sheet.qss"), "r+") as f: 
         _style = f.read() 
         app.setStyleSheet(_style)##Sets the style sheet
+
+def backButton(): ## this can be called when going back a menue
+    mainStackLayout.setCurrentIndex(0)
 
 
 
