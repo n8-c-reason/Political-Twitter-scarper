@@ -24,6 +24,8 @@ class PrimaryMenue(QWidget):## The function which will hold all the widgets for 
 
         ## QPUSHBUTTON ##
         self.tweetScraping = Button("Tweet scraper", 25)
+        self.tweetScraping.clicked.connect(self.changeToScrape)
+        self.tweetScraping.setToolTip("press me")
 
         self.retriveData = Button("Retrieve Data", 50)
 
@@ -38,6 +40,7 @@ class PrimaryMenue(QWidget):## The function which will hold all the widgets for 
         self.settingsButton.setProperty("class", "settingsButtons") ## I then need to change the class of the button to settings class
         self.settingsButton.setIconSize(QSize(40, 40))
         self.settingsButton.setFixedSize(QSize(40, 40))
+        self.settingsButton.setToolTip("Settings menue")
         self.settingsButton.clicked.connect(self.changeToSettings)
 
         self.exitButton = Button("", 0)

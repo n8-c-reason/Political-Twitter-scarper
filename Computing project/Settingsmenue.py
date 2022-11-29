@@ -31,6 +31,7 @@ class SettingsMenue(QWidget):
         self.backButton.setProperty("class", "settingsButtons") 
         self.backButton.setFixedSize(QSize(40, 40))
         self.backButton.setIconSize(QSize(40, 40))
+        self.backButton.setToolTip("Back to main menue")
         self.backButton.clicked.connect(self.back) ## It then calls a fucntion which will then change the index back to the main menue
 
         ## ADD WIDGETS TO LAYOUTS
@@ -77,22 +78,27 @@ class SettingsMenue(QWidget):
         self.accessLabel.setChecked(False)
     def textChnaged(self, newVal):
         print(newVal)
+        with open(os.path.join(sys.path[0], "main style sheet.qss"), "r") as f:
+                css = f.readlines()
         if newVal > 35:
-            self.error = QLabel("Maxium fontzize of 30")
+            css[1] = (f"    font-size: {35}px;\n")
+            css[4] = (f"    font-size: {35}px;\n")
+            self.error = QLabel("Maxium fontzize of 35")
             self.accessVLayout.addWidget(self.error)
             self.error.setProperty("class", "error")
         else:
+
             try:
-                self.error.hide()
-            except:
-                with open(os.path.join(sys.path[0], "main style sheet.qss"), "r") as f:
-                        css = f.readlines()
                 css[1] = (f"    font-size: {newVal}px;\n")
                 css[4] = (f"    font-size: {newVal}px;\n")
-                with open(os.path.join(sys.path[0], "main style sheet.qss"), "w") as f:
-                    f.writelines(css)
-                from UI import settingsReset
-                settingsReset()                
+                self.error.hide()
+            except:
+                css[1] = (f"    font-size: {newVal}px;\n")
+                css[4] = (f"    font-size: {newVal}px;\n")
+        with open(os.path.join(sys.path[0], "main style sheet.qss"), "w") as f:
+            f.writelines(css)
+        from UI import settingsReset
+        settingsReset()                
 
     def back(self):
         from UI import backButton ## This imports the main file

@@ -62,6 +62,8 @@ firstMenue = PrimaryMenue()
 mainStackLayout.addWidget(firstMenue)
 widgets.setFixedHeight(450)
 widgets.setFixedWidth(600)
+widgets.setWindowIcon(QIcon("Computing project\Images\icons8-twitter-26.png"))
+widgets.setWindowTitle("Tweet analysier")
 
 widgets.show()##All widgets need to be shown
 
