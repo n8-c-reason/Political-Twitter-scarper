@@ -1,8 +1,8 @@
 QPushButton {
-    font-size: 24px;
+    font-size: 25px;
 }
 QLabel {
-    font-size: 24px;
+    font-size: 25px;
     color: #52796f;
 }
 QSpinBox {
@@ -13,7 +13,8 @@ QSpinBox {
     color: red;
     font-size: 24px;
 }
-QSlider::groove:horizontal {
+/*For this I chose to to use a general css name as I would probaly not need different styles of slider */
+QSlider::groove:horizontal { /*This is the groove for the slider  handle */
     border: 1px solid black;
     height: 12px;
     background-color: transparent;

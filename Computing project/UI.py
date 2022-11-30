@@ -1,6 +1,5 @@
 import sys ##Allows you to launch the app from commandline 
 import os
-import sass
 from PyQt6.QtGui import QFont, QFontDatabase, QIcon
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
