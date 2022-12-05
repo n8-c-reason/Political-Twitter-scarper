@@ -15,7 +15,7 @@ from mainScrapeUI import TweetScrape
 
 currentIndex = 0## This will allow me to widgets I've added to the stack and index it aacordilngly to it
 def changeScrape():
-    global mainStackLayout, currentIndex
+    global mainStackLayout, currentIndex, scrapeM
     scrapeM = TweetScrape()
     mainStackLayout.addWidget(scrapeM)
     currentIndex += 1
@@ -40,6 +40,10 @@ def changeData():
     mainStackLayout.setCurrentIndex(currentIndex)
 
 ##MISC functions
+def progressBarUpdate(value, total):
+    total = (value/total)*100
+    total.round()
+    scrapeM.progressUpdate(total)
 
 def settingsReset(): ##When changing anything in stylesheet it needs to be reapplied 
     with open(os.path.join(sys.path[0], "main style sheet.qss"), "r+") as f: 
