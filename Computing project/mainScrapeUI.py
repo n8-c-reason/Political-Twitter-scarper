@@ -184,13 +184,15 @@ class TweetScrape(QWidget):
         self.dataManegemntW.setLayout(self.dataMainV)
 
     def nameFile(self):
-        self.nameEntered = False
+        self.nameEntered = False ## Varible to check if a file name has been entered
         self.fileNamV = QVBoxLayout()
 
+        ## MAIN WIDGETS FOR THIS FUNCTION
         self.fileNamL = QLabel("Please enter a name for the spread sheet file:")
         self.fileNameLE = QLineEdit()
         self.fileNameLE.textChanged.connect(self.fileNameEnterd)
         
+        ## ADD WIDGETS TO LAYOUT
         self.fileNamV.addWidget(self.fileNamL)
         self.fileNamV.addWidget(self.fileNameLE)
         
@@ -204,6 +206,7 @@ class TweetScrape(QWidget):
         self.fileNameW.setLayout(self.fileNamV)
         self.fileNamV.addLayout(self.nextbackH1)
 
+        ##The pop-up error message
         self.fileNamError = QLabel("Please enter a file name")
         self.fileNamError.setProperty("class", "error")
     def dateTimeEntry(self):
@@ -247,112 +250,127 @@ class TweetScrape(QWidget):
         self.scrapeProgress.setValue(0)
         self.scrapeV.addWidget(self.scrapeProgress)
         self.callScraper(self.numTweets, self.searchFor, self.account, self.fileName, self.fromDate, self.toDate)
+    
     ## CLICKLED CONNECT FUNCTIONS
     ## Toggle btween account and hashtag scrape
     def dateFrom(self):
         value = self.fromD.date()
-        value = value.toString("yyyy, MM, dd")
-        self.fromDate = value
+        value = value.toString("yyyy, MM, dd") ## Turns the QDate to a string
+        self.fromDate = value ## Sets to my varible
+    
     def dateTo(self):
         value = self.toD.date()
         value = value.toString("yyyy, MM, dd")
         self.toDate = value
+
     def scrapeTerm(self, entry):
         if self.textEntry.text():
-            self.termEntered = True
+            self.termEntered = True ## Tests to see if entry box is full
         else:
             self.termEntered = False
-        self.searchFor = entry
+        self.searchFor = entry ##adds to my varible
+
     def fileNameEnterd(self, entry):
-        if self.fileNameLE.text():
+        if self.fileNameLE.text(): ##Tests to see if text is in box
             self.nameEntered = True
         else:
             self.nameEntered = False
         self.fileName = entry
+
     def searchOpt(self):
         self.account = False
-        self.textEntry.setEnabled(True)
-        self.accountB.setChecked(False)
+        self.textEntry.setEnabled(True) ## Enables the entry box
+        self.accountB.setChecked(False) ##Toggles the other button
         self.searchB.setChecked(True)
-        self.optionL.setText("Please enter your search term:")
+        self.optionL.setText("Please enter your search term:") ## Changes text to option selected
+
     def accountOpt(self):
         self.account = True
         self.textEntry.setEnabled(True)
         self.accountB.setChecked(True)
-        self.searchB.setChecked(False)
+        self.searchB.setChecked(False)##Unchecks the other button
         self.optionL.setText("Please enter an account name:")
+
     def nameNeeded(self, state):
-        if state == Qt.CheckState.Checked.value:
+        if state == Qt.CheckState.Checked.value: ##Check box not currently being used but checks to see if checked
             self.fileNameNeeded = True
         else:
             self.fileNameNeeded = False
+
     def slideValChnage(self, val):
-        if val > 0:
+        if val > 0: ## Checks to see if current value selected is zero
             self.tweetNumSelected = True
         else:
             self.tweetNumSelected = False
-        self.slideNum.setValue(val)
+        self.slideNum.setValue(val) ## Sets the same value on the slide or spin box
         self.tweetSlide.setValue(val)
-        self.numTweets = val
+        self.numTweets = val ## Adds to the varible
+
     def backTweetOption(self):
-        self.currentindex -= 1
+        self.currentindex -= 1 ## Universal back function as just deacreses the index to the last one used
         self.mainSLayout.setCurrentIndex(self.currentindex)
+
     def back(self):
-        from UI import backButton
+        from UI import backButton ## Back to main menue button
 
         backButton()
+
     def nextPage0(self):
         if self.tweetNumSelected == True:
-            self.tweetNumError.hide()
-            self.currentindex += 1
+            self.tweetNumError.hide() ##Hides the error
+            self.currentindex += 1 ## Increments the index
             self.taregtScrape()
             self.mainSLayout.addWidget(self.taregtScrapeW)
-            self.mainSLayout.setCurrentIndex(self.currentindex)
+            self.mainSLayout.setCurrentIndex(self.currentindex) ## Sets to the next index
         else:
-            self.tweetNumV.insertWidget(1, self.tweetNumError)
+            self.tweetNumV.insertWidget(1, self.tweetNumError) ## Adds error to the layout when there is no tweet number selected
+
     def nextPage1(self):
-        if self.account == False and self.termEntered == True:
+        if self.account == False and self.termEntered == True: ## If they dont want account but something has been entered
             self.currentindex += 1
             self.dateTimeEntry()
             self.mainSLayout.addWidget(self.dateTimeEntryW)
             self.mainSLayout.setCurrentIndex(self.currentindex)
-        elif self.termEntered == True:
+        elif self.termEntered == True: ## IF they just want accound and have enterd a term
             self.currentindex +=1
             self.dataManegemnt()
             self.mainSLayout.addWidget(self.dataManegemntW)
             self.mainSLayout.setCurrentIndex(self.currentindex)
         else:
-            self.targetSV.addWidget(self.termError)
+            self.targetSV.addWidget(self.termError) ## Shows the error
             self.termError.show()
+
     def nextPage2(self):      
         self.currentindex += 1
         self.nameFile()
-        self.mainSLayout.addWidget(self.fileNameW)
+        self.mainSLayout.addWidget(self.fileNameW) ## Goes to file name
         self.mainSLayout.setCurrentIndex(self.currentindex)
 
     def nextPage3(self):
         self.currentindex += 1
         self.startScrape()
-        self.mainSLayout.addWidget(self.startScrapeW)
+        self.mainSLayout.addWidget(self.startScrapeW) ## Goes to last menue
         self.mainSLayout.setCurrentIndex(self.currentindex)
+
     def nextPage4(self):
         self.currentindex += 1
         self.dataManegemnt()
-        self.mainSLayout.addWidget(self.dataManegemntW)
+        self.mainSLayout.addWidget(self.dataManegemntW)##Goes to data manegment
         self.mainSLayout.setCurrentIndex(self.currentindex)
+
     def threadStart(self):
-        t1 = Thread(target=self.callScraper)
+        t1 = Thread(target=self.callScraper) ##Starts a thread
         t1.start()
     def callScraper(self, tweetNum, search, account, fileName, fromD, toD):
-        if account == True:
+        if account == True: ##IF wants to scrape for an accound
             from mainScraper import startUserScrape
             
             startUserScrape(tweetNum, search, fileName)
-        else:
+        else: ## If wants to scrape a search
             from mainScraper import startSearchScrape
 
             startSearchScrape(tweetNum, search, fileName, fromD, toD)
-    def progressUpdate(self, total):
+    def progressUpdate(self, total): ## Work in progress
         self.scrapeProgress.setValue(total)
 
 

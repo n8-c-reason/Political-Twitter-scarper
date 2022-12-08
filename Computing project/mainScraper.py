@@ -37,3 +37,6 @@ def startSearchScrape(numTweets, search, fileName, dateFrom, dateTo):
     tweets_df = pd.DataFrame(attributes_container, columns=["User", "Date Created", "Number of Likes", "Source of Tweet", "Tweet"])
     fileName = fileName + ".csv"
     tweets_df.to_csv(fileName, encoding="utf-8")
+
+
+    
