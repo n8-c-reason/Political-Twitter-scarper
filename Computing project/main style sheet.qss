@@ -98,3 +98,7 @@ QSlider::handle:horizontal:hover {
     border-bottom-left-radius: 0px;
     border-top-right-radius: 0px;   
 }
+QLineEdit {
+    height: 40px;
+    font-size: 28px;
+}

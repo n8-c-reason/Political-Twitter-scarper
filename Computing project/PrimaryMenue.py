@@ -25,7 +25,7 @@ class PrimaryMenue(QWidget):## The function which will hold all the widgets for 
         ## QPUSHBUTTON ##
         self.tweetScraping = Button("Tweet scraper", 25)
         self.tweetScraping.clicked.connect(self.changeToScrape)
-        self.tweetScraping.setToolTip("press me")
+        self.tweetScraping.setToolTip("Includes sentiment analyis and file saving")
 
         self.retriveData = Button("Retrieve Data", 50)
 

@@ -125,6 +125,7 @@ class TweetScrape(QWidget):
         self.textEntry = QLineEdit()
         self.textEntry.setEnabled(False)
         self.textEntry.textChanged.connect(self.scrapeTerm)
+        self.textEntry.setFixedHeight(40)
         self.targetSV.addLayout(self.optionH)
         self.optionL = QLabel("Please select what to scrape")
         self.targetSV.addSpacing(10)
@@ -190,6 +191,7 @@ class TweetScrape(QWidget):
         ## MAIN WIDGETS FOR THIS FUNCTION
         self.fileNamL = QLabel("Please enter a name for the spread sheet file:")
         self.fileNameLE = QLineEdit()
+        self.fileNameLE.setFixedHeight(40)
         self.fileNameLE.textChanged.connect(self.fileNameEnterd)
         
         ## ADD WIDGETS TO LAYOUT

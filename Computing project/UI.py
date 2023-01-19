@@ -13,36 +13,36 @@ from DataMenue import DataGraph
 from mainScrapeUI import TweetScrape
 ##FUNCTIONS FOR WINDOW CHANGE
 
-currentIndex = 0## This will allow me to widgets I've added to the stack and index it aacordilngly to it
+currentIndexMain = 0## This will allow me to widgets I've added to the stack and index it aacordilngly to it
 def changeScrape():
-    global mainStackLayout, currentIndex, scrapeM
+    global mainStackLayout, currentIndexMain, scrapeM
     scrapeM = TweetScrape()
     mainStackLayout.addWidget(scrapeM)
-    currentIndex += 1
-    mainStackLayout.setCurrentIndex(currentIndex)
+    currentIndexMain += 1
+    mainStackLayout.setCurrentIndex(currentIndexMain)
 def changeSettings():
-    global mainStackLayout, currentIndex
+    global mainStackLayout, currentIndexMain
     settingM = SettingsMenue()
     mainStackLayout.addWidget(settingM)
-    currentIndex += 1
-    mainStackLayout.setCurrentIndex(currentIndex)
+    currentIndexMain += 1
+    mainStackLayout.setCurrentIndex(currentIndexMain)
 def changeEmail():
-    global mainStackLayout, currentIndex
+    global mainStackLayout, currentIndexMain
     emailD = EmailData()
     mainStackLayout.addWidget(emailD)
-    currentIndex += 1
-    mainStackLayout.setCurrentIndex(currentIndex)
+    currentIndexMain += 1
+    mainStackLayout.setCurrentIndex(currentIndexMain)
 def changeData():
-    global mainStackLayout, currentIndex
+    global mainStackLayout, currentIndexMain
     dataG = DataGraph()
     mainStackLayout.addWidget(dataG)
-    currentIndex += 1
-    mainStackLayout.setCurrentIndex(currentIndex)
+    currentIndexMain += 1
+    mainStackLayout.setCurrentIndex(currentIndexMain)
 
 ##MISC functions
 def progressBarUpdate(value, total):
-    total = (value/total)*100
-    total.round()
+    totalProg = (value/total)*100
+    totalProg.round()
     scrapeM.progressUpdate(total)
 
 def settingsReset(): ##When changing anything in stylesheet it needs to be reapplied 
