@@ -17,9 +17,9 @@ def startUserScrape(numTweets, search, fileName):
         progressBarUpdate(i, numTweets)
         
     # Creating a dataframe from the tweets list above 
-    tweets_df = pd.DataFrame(attributes_container, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets"])
+    tweetsDF = pd.DataFrame(attributes_container, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets"])
     fileName = fileName + ".csv"
-    tweets_df.to_csv(fileName, encoding='utf-8')
+    tweetsDF.to_csv(fileName, encoding='utf-8')
 
 def startSearchScrape(numTweets, search, fileName, dateFrom, dateTo):
     # Creating list to append tweet data to
@@ -34,9 +34,9 @@ def startSearchScrape(numTweets, search, fileName, dateFrom, dateTo):
         attributes_container.append([tweet.user.username, tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.content])
         
     # Creating a dataframe to load the list
-    tweets_df = pd.DataFrame(attributes_container, columns=["User", "Date Created", "Number of Likes", "Source of Tweet", "Tweet"])
+    tweetsDF = pd.DataFrame(attributes_container, columns=["User", "Date Created", "Number of Likes", "Source of Tweet", "Tweet"])
     fileName = fileName + ".csv"
-    tweets_df.to_csv(fileName, encoding="utf-8")
+    tweetsDF.to_csv(fileName, encoding="utf-8")
 
 
     
