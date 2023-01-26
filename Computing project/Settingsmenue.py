@@ -3,13 +3,16 @@ import os
 from PyQt6.QtGui import QFont, QFontDatabase, QIcon
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
-     QHBoxLayout, QLabel, QGridLayout, QCheckBox, QPushButton, QStackedLayout, QSpinBox)
+     QHBoxLayout, QLabel, QGridLayout, QCheckBox, QPushButton, QStackedLayout, QSpinBox, QLineEdit)
 from pip import main ##All the widgets I may use I'll import here
 
 
 class SettingsMenue(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent) ## We can set the parent 
+
+        self.testString = ""
+
         self.mainVLayout = QVBoxLayout() ## This is the main layout for the page
         self.mainHLayout = QHBoxLayout() ## This holds the buttons for the two settings menue
         self.mainSLayouts = QStackedLayout() ## This layout allows us to switch between are to layouts
@@ -64,12 +67,43 @@ class SettingsMenue(QWidget):
         ##TWEET SCRAPING SETTINGS 
         self.tSettingWidget = QWidget()
         self.tSettingVLayout = QVBoxLayout()
-        self.test = QLabel("TEST")
-        self.tSettingVLayout.addWidget(self.test)
+        # self.test = QLabel("TEST")
+        # self.tSettingVLayout.addWidget(self.test)
         self.tSettingWidget.setLayout(self.tSettingVLayout)
         self.mainSLayouts.addWidget(self.tSettingWidget)
 
+        ## Tweet name tester
+        self.settingsLabel = QLabel("Please enter a twitter account name to test:")
+        self.testNameEntry = QLineEdit()
+        self.testNameEntry.textChanged.connect(self.testEntry)
+        self.entryB = QPushButton("TEST")
+        self.entryB.setToolTip("Test if this username exists") ## explaining tool tip
+        self.entryB.setFixedSize(QSize(180, 40))
+        self.entryB.setProperty("class", "menueButtons")
+        self.entryB.clicked.connect(self.entrySubmit)
+        self.errorMessage = QLabel("This account does not exist") ## pop up for no username
+        self.errorMessage.setProperty("class", "error")
+        self.succesMessage = QLabel("This is a real account") ## pop up for succes of username
+        ## Add to layout
+        self.tSettingVLayout.addWidget(self.settingsLabel)
+        self.tSettingVLayout.addWidget(self.testNameEntry)
+        self.tSettingVLayout.addWidget(self.entryB)
+
+
         self.setLayout(self.mainVLayout)
+    def entrySubmit(self): ## Connected to the buttons and connects to the scraper file
+        from mainScraper import scrapeTester ## import the file
+        if scrapeTester(self.testString) == False: ## If it returns false it shows the error message
+            self.succesMessage.hide()
+            self.tSettingVLayout.addWidget(self.errorMessage)
+            self.errorMessage.show()
+        else:
+            self.errorMessage.hide()
+            self.tSettingVLayout.addWidget(self.succesMessage)
+            self.succesMessage.show()
+
+    def testEntry(self, value):
+        self.testString = value ## adds the current value in the line edit to value
     def changeToAccess(self):
         self.mainSLayouts.setCurrentIndex(0)
         self.tweetLabel.setChecked(False)
