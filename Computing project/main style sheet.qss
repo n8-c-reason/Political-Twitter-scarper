@@ -1,8 +1,8 @@
 QPushButton {
-    font-size: 25px;
+    font-size: 20px;
 }
 QLabel {
-    font-size: 25px;
+    font-size: 20px;
     height: 24px;
     color: #52796f;
 }
