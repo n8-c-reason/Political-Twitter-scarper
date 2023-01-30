@@ -70,6 +70,35 @@ print(countWords.most_common(30))
 tweetWord = pd.DataFrame(countWords.most_common(20), columns = ["Words", "Count"]) 
 tweetWord.head()
 
+# fig, ax = plt.subplots(figsize=(8, 8))
+
+# # Plot horizontal bar graph
+# tweetWord.sort_values(by='Count').plot.barh(x='Words',
+#                       y='Count',
+#                       ax=ax,
+#                       color="purple")
+
+# ax.set_title("Common Words Found in Tweets (Including All Words)")
+
+# plt.show()
+
+stop_words = set(stopwords.words('english'))
+
+# View a few words from the set
+list(stop_words)[0:10]
+
+tweets_nsw = [[word for word in tweet_words if not word in stop_words]
+              for tweet_words in wordsInTweets]
+
+all_words_nsw = list(itertools.chain(*tweets_nsw))
+
+counts_nsw = collections.Counter(all_words_nsw)
+
+
+
+cleanTweetsdf = pd.DataFrame(counts_nsw.most_common(20), columns = ["Words", "Count"])
+cleanTweetsdf.head()
+
 fig, ax = plt.subplots(figsize=(8, 8))
 
 ## Plot horizontal bar graph
@@ -78,6 +107,6 @@ tweetWord.sort_values(by='Count').plot.barh(x='Words',
                       ax=ax,
                       color="purple")
 
-ax.set_title("Common Words Found in Tweets (Including All Words)")
+ax.set_title("Common Words Found in Tweets (Withouth stop words)")
 
 plt.show()
