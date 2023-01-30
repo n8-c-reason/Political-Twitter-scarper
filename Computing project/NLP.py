@@ -17,30 +17,50 @@ class ProccessedTweets():
         self.openTweets(filename)
         self.tweetsNoURLS = [] ## First stage
         self.wordsInTweets = [] ## Second stage
-        self.tweetsNoStop = []
+        self.tweetsNoStop = [] ##Third stage
 
 
     def openTweets(self, filename):
+        ## Open the saved csv
         self.df = pd.read_csv(f"{filename}.csv")
         self.noURL()
     def noURL(self):
         for name, values in self.df[['Tweets']].items():
-            for x in values:
+            for x in values: ## Goes through all the tweets and gets rid of URL
                 self.tweetsNoURLS.append(removeUrl(x))
-            df["TweetsNoURL"] = [removeUrl(x) for x in values]
+            df["TweetsNoURL"] = [removeUrl(x) for x in values] ##creates a new coloumn
         self.lowerWords()
+
     def lowerWords(self):
+        ## lower case for all tweets
         self.wordsInTweets = [tweet.lower().split() for tweet in self.tweetsNoURLS]
         self.removeStopWords
-    def countFreq(self):
-        self.allwords_ = list(itertools.chain(*wordsInTweets))
-        self.countWords_ = collections.Counter(self.allwords_)
-        self.tweetWords = pd.DataFrame(countWords.most_common(20), columns=["Words", "Count"])
-        self.tweetWords.head()
-
     def removeStopWords(self):
+        ## Creates a list of the english stopwords
         self.stopWords_ = set(stopwords.words('english'))
         self.tweetsNoStop = [[word for word in words if not word in self.stopWords_]for words in self.wordsInTweets]
+        self.countFreq()
+    def countFreq(self):
+        ## Split the sentences in to separate words
+        self.allwords_ = list(itertools.chain(*self.tweetsNoStop))
+        self.countWords_ = collections.Counter(self.allwords_)
+        ## Make a new dataframe
+        self.tweetWords = pd.DataFrame(countWords.most_common(20), columns=["Words", "Count"])
+        self.tweetWords.head()
+    def drawGraph(self):
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        ## Plot horizontal bar graph
+        self.tweetWords.sort_values(by='Count').plot.barh(x='Words',
+                            y='Count',
+                            ax=ax,
+                            color="purple")
+
+        ax.set_title("Common Words Found in Tweets (Withouth stop words)")
+
+        plt.show()
+
+
 
 
 #     def openAndProccess(self, filename):

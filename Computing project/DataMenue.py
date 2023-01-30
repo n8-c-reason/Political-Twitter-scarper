@@ -23,7 +23,7 @@ class DataGraph(QWidget):
         self.enterB = QPushButton("NEXT")
         self.enterB.setFixedSize(QSize(180, 40))
         self.enterB.setProperty("class", "menueButtons")
-        self.enterB.clicked.connect(self.)
+        self.enterB.clicked.connect(self.enterMap)
         self.testTitle = QLabel("Work in progress")
         self.mainVLayout.addWidget(self.backbutton, alignment=Qt.AlignmentFlag.AlignRight.AlignTop)
         self.mainVLayout.addWidget(self.testTitle)
