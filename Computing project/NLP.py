@@ -34,12 +34,21 @@ class ProccessedTweets():
         self.tweetWords = pd.DataFrame(countWords.most_common(20), columns=["Words", "Count"])
         self.tweetWords.head()
 
+    def drawGraph(self):
+        fig, ax = plt.subplots(figsize = (8, 8))
+        # Plot horizontal bar graph
+        self.tweetWords.sort_values(by='Count').plot.barh(x='Words',
+                            y='Count',
+                            ax=ax,
+                            color="purple")
 
-#     def openAndProccess(self, filename):
-#         testTweets = pd.read_csv(filename+".csv")
-#         tweets
+        ax.set_title("Common Words Found in Tweets (Including All Words)")
+
+        plt.show()
+
+
 tweetsNoURLS = []
-df =pd.read_csv("test4.csv")
+df =pd.read_csv("test1.csv")
 for name, values in df[['Tweets']].items():
     for x in values:
         tweetsNoURLS.append(removeUrl(x))
@@ -50,15 +59,45 @@ countWords = collections.Counter(allWords)
 tweetWord = pd.DataFrame(countWords.most_common(20), columns = ["Words", "Count"])
 tweetWord.head()
 
+# fig, ax = plt.subplots(figsize=(8, 8))
+
+# # Plot horizontal bar graph
+# tweetWord.sort_values(by='Count').plot.barh(x='Words',
+#                       y='Count',
+#                       ax=ax,
+#                       color="purple")
+
+# ax.set_title("Common Words Found in Tweets (Including All Words)")
+
+# plt.show()
+
+stop_words = set(stopwords.words('english'))
+
+# View a few words from the set
+list(stop_words)[0:10]
+
+tweets_nsw = [[word for word in tweet_words if not word in stop_words]
+              for tweet_words in wordsInTweets]
+
+all_words_nsw = list(itertools.chain(*tweets_nsw))
+
+counts_nsw = collections.Counter(all_words_nsw)
+
+
+
+cleanTweetsdf = pd.DataFrame(counts_nsw.most_common(20), columns = ["Words", "Count"])
+cleanTweetsdf.head()
+
 fig, ax = plt.subplots(figsize=(8, 8))
 
 # Plot horizontal bar graph
-tweetWord.sort_values(by='Count').plot.barh(x='Words',
+cleanTweetsdf.sort_values(by='Count').plot.barh(x='Words',
                       y='Count',
                       ax=ax,
                       color="purple")
 
-ax.set_title("Common Words Found in Tweets (Including All Words)")
+ax.set_title("Common Words Found in Tweets (Withouth stop words)")
 
 plt.show()
+
 

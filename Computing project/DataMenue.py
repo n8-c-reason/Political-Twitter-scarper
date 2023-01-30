@@ -31,7 +31,9 @@ class DataGraph(QWidget):
     def textChanged(self, text):
         self.textEntered = text
     def enterMap(self):
-        from (nlp and )
+        from NLP import ProccessedTweets
+
+        ProccessedTweets(self.textEntered)       
     def back(self):
         from UI import backButton
 
