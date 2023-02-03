@@ -12,15 +12,12 @@ def removeUrl(tweet):
 
 
 class ProccessedTweets():
-    def __init__(self, filename, choice) -> None:
+    def __init__(self, filename) -> None:
         super().__init__()
         self.openTweets(filename)
         self.tweetsNoURLS = [] ## First stage
         self.wordsInTweets = [] ## Second stage
         self.tweetsNoStop = [] ##Third stage
-
-        if choice == sentV:
-
     def openTweets(self, filename):
         ## Open the saved csv
         self.df = pd.read_csv(f"{filename}.csv")
