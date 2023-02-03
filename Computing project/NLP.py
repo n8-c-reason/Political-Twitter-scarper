@@ -12,7 +12,7 @@ def removeUrl(tweet):
 
 
 class ProccessedTweets():
-    def __init__(self, filename) -> None:
+    def __init__(self, filename, choice) -> None:
         super().__init__()
         self.tweetsNoURLS = [] ## First stage
         self.wordsInTweets = [] ## Second stage
@@ -58,6 +58,10 @@ class ProccessedTweets():
         ax.set_title("Common Words Found in Tweets (Withouth stop words)")
 
         plt.show()
+    def sentimentVADER(self):
+        from sentimentAnalasyisPrototype import VADARsentiment
+
+        VADARsentiment(df)
 
 
 
