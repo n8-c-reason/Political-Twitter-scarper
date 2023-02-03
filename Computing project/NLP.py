@@ -14,12 +14,11 @@ def removeUrl(tweet):
 class ProccessedTweets():
     def __init__(self, filename) -> None:
         super().__init__()
-        self.openTweets(filename)
         self.tweetsNoURLS = [] ## First stage
         self.wordsInTweets = [] ## Second stage
         self.tweetsNoStop = [] ##Third stage
 
-
+        self.openTweets(filename)
     def openTweets(self, filename):
         ## Open the saved csv
         self.df = pd.read_csv(f"{filename}.csv")
@@ -28,7 +27,7 @@ class ProccessedTweets():
         for name, values in self.df[['Tweets']].items():
             for x in values: ## Goes through all the tweets and gets rid of URL
                 self.tweetsNoURLS.append(removeUrl(x))
-            df["TweetsNoURL"] = [removeUrl(x) for x in values] ##creates a new coloumn
+            self.df["TweetsNoURL"] = [removeUrl(x) for x in values] ##creates a new coloumn
         self.lowerWords()
 
     def lowerWords(self):
@@ -45,7 +44,7 @@ class ProccessedTweets():
         self.allwords_ = list(itertools.chain(*self.tweetsNoStop))
         self.countWords_ = collections.Counter(self.allwords_)
         ## Make a new dataframe
-        self.tweetWords = pd.DataFrame(countWords.most_common(20), columns=["Words", "Count"])
+        self.tweetWords = pd.DataFrame(self.countWords_.most_common(20), columns=["Words", "Count"])
         self.tweetWords.head()
     def drawGraph(self):
         fig, ax = plt.subplots(figsize=(8, 8))
@@ -69,7 +68,7 @@ class ProccessedTweets():
 
 
 tweetsNoURLS = []
-df =pd.read_csv("test4.csv") ## Read csv
+df =pd.read_csv("test1.csv") ## Read csv
 
 for name, values in df[['Tweets']].items(): ## Read the one row of the df
     for x in values:
