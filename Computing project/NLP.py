@@ -12,40 +12,68 @@ def removeUrl(tweet):
 
 
 class ProccessedTweets():
-    def __init__(self, filename) -> None:
+    def __init__(self, filename, wordFreq, sentiment) -> None:
         super().__init__()
         self.tweetsNoURLS = [] ## First stage
         self.wordsInTweets = [] ## Second stage
         self.tweetsNoStop = [] ##Third stage
+        self.fileName = filename
+
+        if wordFreq == True:
+            self.openTweets(filename)
+            self.lowerWords()
+            self.countFreq()
+            if sentiment == "VADER":
+                self.openTweets(filename)
+                self.lowerWordsNoSplit()
+                self.newColoumnDF()
+                self.sentimentVADER()    
+            else:
+                print("not yet availbel")           
+        elif sentiment == "VADER":
+            self.openTweets(filename)
+            self.newColoumnDF()
+            self.sentimentVADER()
+        else:
+            print("not yet available")
+        
+
 
         self.openTweets(filename)
     def openTweets(self, filename):
         ## Open the saved csv
-        self.df = pd.read_csv(f"{filename}.csv")
+        self.df_ = pd.read_csv(f"{filename}.csv")
         self.noURL()
     def noURL(self):
-        for name, values in self.df[['Tweets']].items():
+        for name, values in self.df_[['Tweets']].items():
             for x in values: ## Goes through all the tweets and gets rid of URL
                 self.tweetsNoURLS.append(removeUrl(x))
-            self.df["TweetsNoURL"] = [removeUrl(x) for x in values] ##creates a new coloumn
-        self.lowerWords()
 
+    def lowerWordsNoSplit(self):
+        ##Lower case for all tweets but does not split in to seprate words
+        self.wordsInTweets = [tweet.lower() for tweet in self.tweetsNoURLS]
+        self.removeStopWords()
     def lowerWords(self):
         ## lower case for all tweets
         self.wordsInTweets = [tweet.lower().split() for tweet in self.tweetsNoURLS]
-        self.removeStopWords
+        self.removeStopWords()
     def removeStopWords(self):
         ## Creates a list of the english stopwords
         self.stopWords_ = set(stopwords.words('english'))
         self.tweetsNoStop = [[word for word in words if not word in self.stopWords_]for words in self.wordsInTweets]
-        self.countFreq()
+    def newColoumnDF(self):
+        self.df_["TweetsNoStop"] = self.tweetsNoURLS
     def countFreq(self):
         ## Split the sentences in to separate words
+        print(self.tweetsNoStop)
         self.allwords_ = list(itertools.chain(*self.tweetsNoStop))
+
         self.countWords_ = collections.Counter(self.allwords_)
         ## Make a new dataframe
         self.tweetWords = pd.DataFrame(self.countWords_.most_common(20), columns=["Words", "Count"])
         self.tweetWords.head()
+        self.tweetWords.to_csv((self.fileName+"wordfreq.csv"), encoding='utf-8')
+        self.drawGraph()
     def drawGraph(self):
         fig, ax = plt.subplots(figsize=(8, 8))
 
@@ -61,7 +89,8 @@ class ProccessedTweets():
     def sentimentVADER(self):
         from sentimentAnalasyisPrototype import VADARsentiment
 
-        VADARsentiment(df)
+        VADARsentiment(self.df_, self.fileName)
+
 
 
 
@@ -71,65 +100,65 @@ class ProccessedTweets():
 #         tweets
 
 
-tweetsNoURLS = []
-df =pd.read_csv("test1.csv") ## Read csv
+# tweetsNoURLS = []
+# df =pd.read_csv("test1.csv") ## Read csv
 
-for name, values in df[['Tweets']].items(): ## Read the one row of the df
-    for x in values:
-        tweetsNoURLS.append(removeUrl(x)) ## Append to the list
-    df["TweetsNoURL"] = tweetsNoURLS ## Create a new list in the df
+# for name, values in df[['Tweets']].items(): ## Read the one row of the df
+#     for x in values:
+#         tweetsNoURLS.append(removeUrl(x)) ## Append to the list
+#     df["TweetsNoURL"] = tweetsNoURLS ## Create a new list in the df
 
-wordsInTweets = [tweet.lower().split() for tweet in tweetsNoURLS] ## Make words lower case
-stopword = set(stopwords.words("english"))
+# wordsInTweets = [tweet.lower().split() for tweet in tweetsNoURLS] ## Make words lower case
+# stopword = set(stopwords.words("english"))
 
-tweetnostop = [[word for word in words if not word in stopword]for words in wordsInTweets]
+# tweetnostop = [[word for word in words if not word in stopword]for words in wordsInTweets]
 
-allWords = list(itertools.chain(*tweetnostop))## Create a list of separate words
+# allWords = list(itertools.chain(*tweetnostop))## Create a list of separate words
 
-countWords = collections.Counter(allWords) ## Use the collections module to count words
+# countWords = collections.Counter(allWords) ## Use the collections module to count words
 
-print(countWords.most_common(30))
-## Create a new df with the counts of words
-tweetWord = pd.DataFrame(countWords.most_common(20), columns = ["Words", "Count"]) 
-tweetWord.head()
+# print(countWords.most_common(30))
+# ## Create a new df with the counts of words
+# tweetWord = pd.DataFrame(countWords.most_common(20), columns = ["Words", "Count"]) 
+# tweetWord.head()
+
+# # fig, ax = plt.subplots(figsize=(8, 8))
+
+# # # Plot horizontal bar graph
+# # tweetWord.sort_values(by='Count').plot.barh(x='Words',
+# #                       y='Count',
+# #                       ax=ax,
+# #                       color="purple")
+
+# # ax.set_title("Common Words Found in Tweets (Including All Words)")
+
+# # plt.show()
+
+# stop_words = set(stopwords.words('english'))
+
+# # View a few words from the set
+# list(stop_words)[0:10]
+
+# tweets_nsw = [[word for word in tweet_words if not word in stop_words]
+#               for tweet_words in wordsInTweets]
+
+# all_words_nsw = list(itertools.chain(*tweets_nsw))
+
+# counts_nsw = collections.Counter(all_words_nsw)
+
+
+
+# cleanTweetsdf = pd.DataFrame(counts_nsw.most_common(20), columns = ["Words", "Count"])
+# cleanTweetsdf.head()
 
 # fig, ax = plt.subplots(figsize=(8, 8))
 
-# # Plot horizontal bar graph
+# ## Plot horizontal bar graph
 # tweetWord.sort_values(by='Count').plot.barh(x='Words',
 #                       y='Count',
 #                       ax=ax,
 #                       color="purple")
 
-# ax.set_title("Common Words Found in Tweets (Including All Words)")
+# ax.set_title("Common Words Found in Tweets (Withouth stop words)")
 
 # plt.show()
-
-stop_words = set(stopwords.words('english'))
-
-# View a few words from the set
-list(stop_words)[0:10]
-
-tweets_nsw = [[word for word in tweet_words if not word in stop_words]
-              for tweet_words in wordsInTweets]
-
-all_words_nsw = list(itertools.chain(*tweets_nsw))
-
-counts_nsw = collections.Counter(all_words_nsw)
-
-
-
-cleanTweetsdf = pd.DataFrame(counts_nsw.most_common(20), columns = ["Words", "Count"])
-cleanTweetsdf.head()
-
-fig, ax = plt.subplots(figsize=(8, 8))
-
-## Plot horizontal bar graph
-tweetWord.sort_values(by='Count').plot.barh(x='Words',
-                      y='Count',
-                      ax=ax,
-                      color="purple")
-
-ax.set_title("Common Words Found in Tweets (Withouth stop words)")
-
-plt.show()

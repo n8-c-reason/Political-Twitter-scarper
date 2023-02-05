@@ -9,11 +9,12 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("test4.csv")
 df.head()
 class VADARsentiment():
-    def __init__(self, df) -> None:
+    def __init__(self, df, fileName) -> None:
         super().__init__()
+        self.df = df
         ## Create an instance of the anayliser
         self.sentAnlyiser = SentimentIntensityAnalyzer()
-        self.results()
+        self.results(fileName)
     def polarityCalc(self, output):
         ## Turn the interger polarity in to either negatiove or postive 
 
@@ -35,17 +36,18 @@ class VADARsentiment():
 
         ## Returns the output to the function which turns it in to strings
         return self.polarityCalc(output)
-    def results(self):
+    def results(self, fileName):
         ## Creates a new coloumn with the results of the scraper
-        df["VADAR predictions"] = df["Tweets"].apply(self.predictSentiment)
-        print(df.sample(5))
+        self.df["VADARpredictions"] = self.df["TweetsNoStop"].apply(self.predictSentiment)
+        self.df.to_csv((fileName+"sentiment.csv"), encoding='utf-8')
+        print(self.df["VADARpredictions"].sample(5))
         ## Calls the plot graph function
         self.plotGraph()
     def plotGraph(self):
         ## Count the number of times the result apears so we can plot the graph
-        self.pos = df["VADAR predictions"].value_counts()["positive"]
-        self.neg = df["VADAR predictions"].value_counts()["negative"]
-        self.neu = df["VADAR predictions"].value_counts()["neutral"]
+        self.pos = self.df["VADARpredictions"].value_counts()["positive"]
+        self.neg = self.df["VADARpredictions"].value_counts()["negative"]
+        self.neu = self.df["VADARpredictions"].value_counts()["neutral"]
 
         ## Add ther values to a numpy array
         self.values = np.array([self.pos, self.neg, self.neu])
@@ -55,5 +57,3 @@ class VADARsentiment():
         ## Create the pie chart and insert all the needed values
         plt.pie(self.values, labels=self.Labels, shadow = True)
         plt.show()
-
-sentiment = VADARsentiment(df)

@@ -13,8 +13,7 @@ def startUserScrape(numTweets, search, fileName):
         if i>numTweets:
             break
         attributesContainer.append([tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.content])
-        from UI import progressBarUpdate
-        progressBarUpdate(i, numTweets)
+
         
     # Creating a dataframe from the tweets list above 
     tweetsDF = pd.DataFrame(attributesContainer, columns=["Date Created", "Number of Likes", "Source of Tweet", "Tweets"])

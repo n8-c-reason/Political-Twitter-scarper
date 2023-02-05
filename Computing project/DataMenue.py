@@ -14,6 +14,8 @@ class DataGraph(QWidget):
         self.mainSLayout = QStackedLayout() ## Stacked layout for difrent menues with index var
         self.currentIndex = 0
         self.textEntered =""
+        self.sentimentNeeded = ""
+        self.wordFreqNeeded = False
 
         ##Widgets needed
         self.fileNameW = QWidget() ## Widget for file name entry menu
@@ -71,11 +73,17 @@ class DataGraph(QWidget):
 
         ##Widgets for the menue 
         self.wordCountC = QCheckBox("Word frequncy")
+        self.wordCountC.stateChanged.connect(self.wordFreqCheck)
         self.sentimentC = QCheckBox("Sentiment analysis")
         self.sentimentC.stateChanged.connect(self.sentimentCheck)
         self.dataL = QLabel("What type of sentiment analaysis:")
         self.typeSentimentC = QComboBox()
         self.typeSentimentC.addItems(["VADAR", "MOVIE REVIEWS"])
+        self.typeSentimentC.setEnabled(False)
+
+        ## Error message
+        self.errorLabel = QLabel("Please select atleast one option")
+        self.errorLabel.setProperty("class", "error")
 
         ## Add to layouts
         self.dataH.addWidget(self.dataL)
@@ -89,10 +97,13 @@ class DataGraph(QWidget):
     def nextPress(self):
         self.currentIndex += 1
         if self.currentIndex == 2:
-            from NLP import ProccessedTweets
+            if self.wordFreqNeeded == True or self.sentimentNeeded == "VADER" or self.sentimentNeeded == "MOVIE":
+                from NLP import ProccessedTweets
 
-            ProccessedTweets(self.textEntered)
-            self.back()
+                ProccessedTweets(self.textEntered, self.wordFreqNeeded, self.sentimentNeeded)
+                self.back()
+            else:
+                self.dataV.addWidget(self.errorLabel)
         else:
             self.mainSLayout.setCurrentIndex(self.currentIndex)
             self.backB.show()
@@ -104,11 +115,18 @@ class DataGraph(QWidget):
             self.mainSLayout.setCurrentIndex(self.currentIndex)
         else:
             self.backB.hide()
+    def wordFreqCheck(self, state):
+        if state == 2:
+            self.wordFreqNeeded = True
+        else:
+            self.wordFreqNeeded = False
     def sentimentCheck(self, state):
-        if state == Qt.CheckState.Checked:
+        if state == 2:
             self.typeSentimentC.setEnabled(True)
+            self.sentimentNeeded = "VADER"
         else:
             self.typeSentimentC.setEnabled(False)
+            self.sentimentNeeded = ""
 
     def textChanged(self, text):
         self.textEntered = text  
