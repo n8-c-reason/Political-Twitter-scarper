@@ -1,10 +1,10 @@
 import pandas as pd
-import nltk
 from nltk.corpus import stopwords
 import re
 import collections
 import itertools
 import matplotlib.pyplot as plt
+##All imports needed above
 
 def removeUrl(tweet):
     ##reaplace any urls found in the string with nothing
@@ -19,11 +19,14 @@ class ProccessedTweets():
         self.tweetsNoStop = [] ##Third stage
         self.fileName = filename
 
+        ##CHECKS WHAT OPTION USER CHOSE
         if wordFreq == True:
+            ##The sequnce of NLP steps
             self.openTweets(filename)
             self.lowerWords()
             self.countFreq()
             if sentiment == "VADER":
+                ##Sequbnce of NLP steps for sentiment
                 self.openTweets(filename)
                 self.lowerWordsNoSplit()
                 self.newColoumnDF()
@@ -31,6 +34,7 @@ class ProccessedTweets():
             else:
                 print("not yet availbel")           
         elif sentiment == "VADER":
+            ##Elif for vader sentiment
             self.openTweets(filename)
             self.newColoumnDF()
             self.sentimentVADER()
@@ -39,7 +43,6 @@ class ProccessedTweets():
         
 
 
-        self.openTweets(filename)
     def openTweets(self, filename):
         ## Open the saved csv
         self.df_ = pd.read_csv(f"{filename}.csv")
@@ -60,33 +63,33 @@ class ProccessedTweets():
     def removeStopWords(self):
         ## Creates a list of the english stopwords
         self.stopWords_ = set(stopwords.words('english'))
+        ##Go through and get rid of them
         self.tweetsNoStop = [[word for word in words if not word in self.stopWords_]for words in self.wordsInTweets]
     def newColoumnDF(self):
+        ##Creates a new coloumn for sentiment anallysi
         self.df_["TweetsNoStop"] = self.tweetsNoURLS
     def countFreq(self):
         ## Split the sentences in to separate words
-        print(self.tweetsNoStop)
         self.allwords_ = list(itertools.chain(*self.tweetsNoStop))
 
         self.countWords_ = collections.Counter(self.allwords_)
         ## Make a new dataframe
         self.tweetWords = pd.DataFrame(self.countWords_.most_common(20), columns=["Words", "Count"])
         self.tweetWords.head()
+        ##Save the new df
         self.tweetWords.to_csv((self.fileName+"wordfreq.csv"), encoding='utf-8')
         self.drawGraph()
     def drawGraph(self):
         fig, ax = plt.subplots(figsize=(8, 8))
 
         ## Plot horizontal bar graph
-        self.tweetWords.sort_values(by='Count').plot.barh(x='Words',
-                            y='Count',
-                            ax=ax,
-                            color="purple")
-
+        self.tweetWords.sort_values(by='Count').plot.barh(x='Words', y='Count', ax=ax, color="purple")
+        ##Set the graph title
         ax.set_title("Common Words Found in Tweets (Withouth stop words)")
 
         plt.show()
     def sentimentVADER(self):
+        ##Calls the sentimetn analysis file
         from sentimentAnalasyisPrototype import VADARsentiment
 
         VADARsentiment(self.df_, self.fileName)

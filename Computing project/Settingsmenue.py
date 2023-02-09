@@ -1,10 +1,10 @@
 import sys ##Allows you to launch the app from commandline 
 import os
-from PyQt6.QtGui import QFont, QFontDatabase, QIcon
+from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout,
-     QHBoxLayout, QLabel, QGridLayout, QCheckBox, QPushButton, QStackedLayout, QSpinBox, QLineEdit)
-from pip import main ##All the widgets I may use I'll import here
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout,
+     QHBoxLayout, QLabel, QCheckBox, QPushButton, QStackedLayout, QSpinBox, QLineEdit)
+##All the widgets I may use I'll import here
 
 
 class SettingsMenue(QWidget):
@@ -17,7 +17,7 @@ class SettingsMenue(QWidget):
         self.mainHLayout = QHBoxLayout() ## This holds the buttons for the two settings menue
         self.mainSLayouts = QStackedLayout() ## This layout allows us to switch between are to layouts
 
-        ##MAIN BUTTON WIDGETS
+        ##MAIN TOGGLE BUTTON WIDGETS
         self.tweetLabel = QPushButton("Tweet scraping", self) ## This button chall be at the top with the other
         self.tweetLabel.setFixedSize(QSize(180, 40)) ## Use this to resize your buttons widpth,height
         self.tweetLabel.setProperty("class", "settingsMenueB") ## Sets the class from out qss stylesheet
@@ -41,6 +41,7 @@ class SettingsMenue(QWidget):
         self.mainHLayout.addSpacing(100) ## This is so there centered close in the middle
         self.mainHLayout.addWidget(self.accessLabel, alignment=Qt.AlignmentFlag.AlignLeading) ## This then justifys them so they are centered equaly
         self.mainHLayout.addWidget(self.tweetLabel, alignment=Qt.AlignmentFlag.AlignTrailing)
+        ##Add spacing to make neater
         self.mainHLayout.addSpacing(100)
         self.mainVLayout.addWidget(self.backButton, alignment=Qt.AlignmentFlag.AlignRight)
         self.mainVLayout.addLayout(self.mainHLayout)
@@ -51,11 +52,13 @@ class SettingsMenue(QWidget):
         self.accessVLayout = QVBoxLayout()
         self.textSizeHLayout = QHBoxLayout() ## Horizontal layout for each row. I shall explore using a grid layout if thats better
         self.textSize = Labels("Font size", 13)
+        ##Number entry for font
         self.numEntry = QSpinBox()
         self.numEntry.valueChanged.connect(self.textChnaged)
 
+        ##Add widgets to layouts
         self.colourHLayout = QHBoxLayout()
-        self.darkMode = QCheckBox("Dark Mode", self)
+        # self.darkMode = QCheckBox("Dark Mode", self)
         self.systemColours = Labels("System Colours", 13)
         self.textSizeHLayout.addWidget(self.textSize)
         self.textSizeHLayout.addWidget(self.numEntry)
@@ -72,15 +75,18 @@ class SettingsMenue(QWidget):
         self.tSettingWidget.setLayout(self.tSettingVLayout)
         self.mainSLayouts.addWidget(self.tSettingWidget)
 
-        ## Tweet name tester
+        ## TWEET NAME TESTER
+        ##Label for name entry
         self.settingsLabel = QLabel("Please enter a twitter account name to test:")
         self.testNameEntry = QLineEdit()
         self.testNameEntry.textChanged.connect(self.testEntry)
+        ##The button to test the name
         self.entryB = QPushButton("TEST")
         self.entryB.setToolTip("Test if this username exists") ## explaining tool tip
         self.entryB.setFixedSize(QSize(180, 40))
         self.entryB.setProperty("class", "menueButtons")
         self.entryB.clicked.connect(self.entrySubmit)
+        ##Error message if no account came back
         self.errorMessage = QLabel("This account does not exist") ## pop up for no username
         self.errorMessage.setProperty("class", "error")
         self.succesMessage = QLabel("This is a real account") ## pop up for succes of username
@@ -89,7 +95,7 @@ class SettingsMenue(QWidget):
         self.tSettingVLayout.addWidget(self.testNameEntry)
         self.tSettingVLayout.addWidget(self.entryB)
 
-
+        ##Sets the main V layout
         self.setLayout(self.mainVLayout)
     def entrySubmit(self): ## Connected to the buttons and connects to the scraper file
         from mainScraper import scrapeTester ## import the file
@@ -98,30 +104,36 @@ class SettingsMenue(QWidget):
             self.tSettingVLayout.addWidget(self.errorMessage)
             self.errorMessage.show()
         else:
+            ##If it was succesfull
             self.errorMessage.hide()
             self.tSettingVLayout.addWidget(self.succesMessage)
             self.succesMessage.show()
 
     def testEntry(self, value):
         self.testString = value ## adds the current value in the line edit to value
+    ##When the toggle button access is pressed
     def changeToAccess(self):
         self.mainSLayouts.setCurrentIndex(0)
         self.tweetLabel.setChecked(False)
+    ##Changes to the scraping settings
     def changeToTSettings(self):
         self.mainSLayouts.setCurrentIndex(1)
         self.accessLabel.setChecked(False)
+    ## When a number is entered to the font size entry box
     def textChnaged(self, newVal):
-        print(newVal)
+        ##Opens the qss file
         with open(os.path.join(sys.path[0], "main style sheet.qss"), "r") as f:
                 css = f.readlines()
+        ##Checks if the entered value is above the limits
         if newVal > 35:
             css[1] = (f"    font-size: {35}px;\n")
             css[4] = (f"    font-size: {35}px;\n")
+            ##Shows the error
             self.error = QLabel("Maxium fontzize of 35")
             self.accessVLayout.addWidget(self.error)
             self.error.setProperty("class", "error")
         else:
-
+            ##Changes to the needed size
             try:
                 css[1] = (f"    font-size: {newVal}px;\n")
                 css[4] = (f"    font-size: {newVal}px;\n")
@@ -129,8 +141,10 @@ class SettingsMenue(QWidget):
             except:
                 css[1] = (f"    font-size: {newVal}px;\n")
                 css[4] = (f"    font-size: {newVal}px;\n")
+        ##Writes to the file
         with open(os.path.join(sys.path[0], "main style sheet.qss"), "w") as f:
             f.writelines(css)
+        ## Resets the stylesheet to the new one
         from UI import settingsReset
         settingsReset()                
 
@@ -138,6 +152,7 @@ class SettingsMenue(QWidget):
         from UI import backButton ## This imports the main file
 
         backButton() ## Then calls the fucntion to go back
+##Class for making labels
 class Labels(QLabel):
     def __init__(self, parent=None, fontSize = 0):
         super().__init__(parent)

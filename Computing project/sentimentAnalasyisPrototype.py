@@ -1,13 +1,12 @@
 import pandas as pd
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.tokenize import RegexpTokenizer
 import numpy as np
 
 import matplotlib.pyplot as plt
+##Imports needed above
 
-df = pd.read_csv("test4.csv")
-df.head()
+
 class VADARsentiment():
     def __init__(self, df, fileName) -> None:
         super().__init__()

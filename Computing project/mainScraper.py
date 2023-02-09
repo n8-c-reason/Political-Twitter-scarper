@@ -40,7 +40,7 @@ def startSearchScrape(numTweets, search, fileName, dateFrom, dateTo):
 def scrapeTester(account): ## Used to test if a username exists
     attributesContainer = []
     try: ## Try except to check if there is an error finding username
-        for i,tweet in enumerate(sntwitter.TwitterProfileScraper(f'from:{account}').get_items()):
+        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{account}').get_items()):
             if i>1:
                 break
             attributesContainer.append([tweet.user.username, tweet.date, tweet.likeCount, tweet.sourceLabel, tweet.content])
